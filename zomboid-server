@@ -1,0 +1,32 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:             zomboid-server
+# Required-Start:       $local_fs $network
+# Required-Stop:        $local_fs $network
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Description:          Project Zomboid Server
+### END INIT INFO
+
+###### Project Zomboid Server Service script ######
+
+case "$1" in
+start)
+screen -d -m -S zomboid su - steam -c "/home/steam/Steam/projectzomboid-dedi-server.sh"
+;;
+stop)
+screen -x zomboid -p 0 -X stuff "^Mquit^M"
+;;
+restart)
+screen -x zomboid -p 0 -X stuff "^Mquit^M"
+screen -d -m -S zomboid su - steam -c "/home/steam/Steam/projectzomboid-dedi-server.sh"
+;;
+save)
+screen -x zomboid -p 0 -X stuff "^Msave^M"
+;;
+*)
+echo "Usage: {start|stop|restart|save}" >&2
+exit 1
+;;
+esac
+exit 0
